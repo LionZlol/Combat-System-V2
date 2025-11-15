@@ -1,246 +1,236 @@
-/* ===== UI REFERENCES ===== */
-const ui = {
+/* ====== GLOBAL ====== */
 
-    // ===== ACTION BUTTONS =====
-    fightBtn: document.getElementById('fightBtn'),
-    magicBtn: document.getElementById('magicBtn'),
-    itemBtn: document.getElementById('itemBtn'),
-    summonBtn: document.getElementById('summonBtn'),
-    actBtn: document.getElementById('actBtn'),
-
-    // ===== ATTACK BUTTONS =====
-    basicAtkBtn: document.getElementById('basicAtkBtn'),
-
-    // ===== MENUS =====
-    fightMenu: document.getElementById('fightMenu'),
-    magicMenu: document.getElementById('magicMenu'),
-    itemMenu: document.getElementById('itemMenu'),
-    summonMenu: document.getElementById('summonMenu'),
-    actMenu: document.getElementById('actMenu'),
-
-    // ===== ENEMY DISPLAY =====
-    enemyNameTxt: document.getElementById('enemyNameTxt'),
-    enemyHealthTxt: document.getElementById('enemyHealthTxt'),
-
-    // ===== PLAYER DISPLAY =====
-    playerHealthTxt: document.getElementById('playerHealthTxt'),
-    playerManaTxt: document.getElementById('playerManaTxt'),
-    playerStatusTxt: document.getElementById('playerStatusTxt'),
-
-    // ===== LOG BOX =====
-    logMain: document.getElementById('logMain'),
-    logEnemy: document.getElementById('logEnemy'),
-    logMisc: document.getElementById('logMisc'),
-
-};
-
-
-/* ===== ENEMY DEFINITIONS ===== */
-const enemies = {
-    gremlin: {
-        name: "Gremlin",
-        health: 2000,
-        maxHealth: 2000,
-        friendliness: 3,
-        aggression: 1,
-        loyalty: 0
-    }
-};
-
-
-/* ===== CURRENT ENEMY ===== */
-let currentEnemy = enemies.gremlin;
-
-/* ===== PLAYER VARIABLES ===== */
-let playerHealth = 500;
-let playerMana = 0;
-let manaGainAmount = 1;
-
-
-/* ===== PLAYER OBJECT ===== */
-const player = {
-	attack(damage) {
-        let critChance = getRandom(1, 20);
-        if(critChance === 20) {
-            currentEnemy.health -= damage * 5;
-            ui.logMain.textContent = `You landed a CRITICAL HIT and did ${damage * 5} DAMAGE!!!`
-        } else {
-		    currentEnemy.health -= damage;
-            ui.logMain.textContent = `You did ${damage} damage!`
-        }
-        updateDisplays();
-        enemyTurn();
-	},
-    mana(gain, amount) {
-        if(gain) {
-            playerMana += amount;
-        } else {
-            playerMana -= amount;
-        }
-        updateDisplays();
-    }
-};
-
-
-
-/* ========================== */
-/* V ===== GAME LOGIC =====  V*/
-/* ========================== */
-
-
-
-/* ===== BUTTON MENU SWITCHING ===== */
-ui.fightBtn.addEventListener("click", function () {
-    switchManager();
-    ui.fightMenu.style.display = "flex";
-});
-
-ui.magicBtn.addEventListener("click", function(){
-    switchManager();
-    ui.magicMenu.style.display = "flex";
-});
-
-ui.itemBtn.addEventListener("click", function(){
-    switchManager();
-    ui.itemMenu.style.display = "flex";
-});
-
-ui.summonBtn.addEventListener("click", function(){
-    switchManager();
-    ui.summonMenu.style.display = "flex";
-});
-
-ui.actBtn.addEventListener("click", function(){
-    switchManager();
-    ui.actMenu.style.display = "flex";
-});
-
-
-/* V ===== ATTACK LOGIC ===== V */
-
-/* ===== BASIC ATTACK LOGIC ===== */
-ui.basicAtkBtn.addEventListener("click", function(){
-    let playerDamage = getRandom(8, 12);
-    player.attack(playerDamage);
-    cooldown(400, ui.basicAtkBtn);
-    shake();
-    BGFlash("red");
-    updateDisplays();
-});
-
-/* ================================= */
-/* V ===== UTILITY FUNCTIONS =====  V*/
-/* ================================= */
-
-
-/* ===== RANDOM NUMBER ===== */
-function getRandom(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-
-/* ===== SUBMENU SWITCHER ===== */
-function switchManager() {
-    ui.fightMenu.style.display = "none";
-    ui.magicMenu.style.display = "none";
-    ui.itemMenu.style.display = "none";
-    ui.summonMenu.style.display = "none";
-    ui.actMenu.style.display = "none";
-};
-
-
-/* ===== SCREEN SHAKE ===== */
-function shake() {
-    const e = document.documentElement;
-    e.classList.remove("shake");
-    void e.offsetWidth;
-    e.classList.add("shake");
-    setTimeout(() => e.classList.remove("shake"), 500);
-};
-
-
-/* ===== FLASH EFFECTS ===== */
-function BGFlash(color) {
-    document.body.classList.remove(
-        'bg-flash-red',
-        'bg-flash-blue',
-        'bg-flash-yellow'
-    );
-    void document.body.offsetWidth;
-    document.body.classList.add(`bg-flash-${color}`);
-};
-
-
-/* ===== COOLDOWN FUNCTION ===== */
-function cooldown(time, element) {
-    element.style.backgroundColor = "gray";
-    element.disabled = true;
-    element.style.cursor = "not-allowed";
-
-    setTimeout(function(){
-        element.style.backgroundColor = "";
-        element.disabled = false;
-        element.style.cursor = "pointer";
-    }, time)
-};
-
-
-/* ===== UI DISPLAY UPDATER ===== */
-function updateDisplays() {
-    ui.enemyHealthTxt.textContent = `Health: ${currentEnemy.health} / ${currentEnemy.maxHealth}`;
-    ui.playerManaTxt.textContent = `Mana: ${playerMana}`
-};
-
-
-/* ===== MANA LOGIC ===== */
-function gainMana() {
-    player.mana(true, manaGainAmount)
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Lexend', sans-serif;
 }
 
-function enemyTurn() {
-    let damage = getRandom(5, 8);
-    playerHealth -= damage;
-    ui.logEnemy.textContent = `The ${currentEnemy.name} dealt ${damage} damage!`;
-    updateDisplays();
-    if (playerHealth <= 0) {
-        // i'll add it later but it deletes the game and only leaves the title with the text "YOU DIED. You fought well... Now rest, or try again, it's your choice"
-    }
+body {
+	background: rgb(10, 10, 10);
+	color: white;
+	user-select: none;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
-/* ===== NO CLUE ===== */
-function smurfShuffle() {
-    let smurf = "IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIM GOING TO DIE";
-    console.log("help help help help help help help help help help help help help help help help help help help help help help help help help help " + smurf + smurf + smurf + " i was bored");
-};
+#title {
+	margin-top: 30px;
+	font-size: 48px;
+	font-weight: 700;
+    text-align: center;
+}
 
+/* ====== GAME ====== */
 
-updateDisplays();
-setInterval(gainMana, 1000);
+#game {
+	margin-top: 30px;
+	width: 1400px;
+	background: rgb(30, 30, 30);
+	border-radius: 16px;
+	padding: 30px;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	box-shadow: 0 0 40px rgba(255,140,0,0.2);
+}
 
-// todo:
-// make it so act uses the friendliness whatever stats to see if the thingy does a cool thing and helps u or sum idk
-// there should be like 8 enemies
-// ooh a crit system would be nice
-// im so bored and proud of my code at the same time imma show this to my friends
-// also make it so that calculateMana(); is a function and it does stuff based on upgrades ig
-// AHHHHH im so bored and tired
+/* ====== OBJECTS ====== */
 
-// when you say you're fine but you're not really fine
-// also for devs reading my horrible code, just remember you probably used to code like this too at one point
-// ok u can leave now
-// really
-// ...
-// whatever i'll just make this be the last comment >:3
-// also-
-// wait i broke my promise
-// AAAAAAAAAAAAAAAAA
-// for those of u saying this code is ai, i put semicolons after my function curly brackets
-// HUH?!??! not so ai generated now
-// okay maybe i google SOME syntax but it's not ai generated
-// how do i center a div
-// chatgpt is my bestie/twin/bro tho
-// ok fr now this is the end
-// why did past-me do this
-// im scared
-// please send help
-// GODDAMMIT I BROKE MY PROMISE AGAIN-
+#enemyArea,
+#playerArea {
+	background: rgb(45,45,45);
+	padding: 20px;
+	border-radius: 12px;
+	text-align: center;
+	border: 2px solid rgba(255,255,255,0.1);
+}
+
+#enemyNameTxt {
+	font-size: 28px;
+	font-weight: 600;
+}
+
+#enemyHealthTxt,
+#playerHealthTxt,
+#playerManaTxt,
+#playerStatusTxt {
+	font-size: 20px;
+	margin-top: 5px;
+}
+
+/* ====== ACTION MENU ====== */
+
+#actionMenu {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	width: 100%;
+}
+
+.action-btn {
+    padding: 12px 24px;
+    background: orange;
+    border: 2px solid black;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 0;
+}
+
+.action-btn:hover {
+	background: rgb(200,80,0);
+}
+
+.action-btn.active {
+	box-shadow: 0 0 15px orange;
+}
+
+/* ====== SUBMENUS ====== */
+
+#submenus {
+	display: flex;
+	justify-content: center;
+	min-height: 80px;
+	width: 100%;
+}
+
+.submenu {
+	display: none;
+	gap: 20px;
+	width: 100%;
+	justify-content: center;
+}
+
+.submenu.active {
+	display: flex;
+}
+
+.sub-btn {
+    padding: 10px 20px;
+    background: rgb(255, 160, 0);
+    border: 2px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 0;
+}
+
+.sub-btn:hover {
+	background: rgb(200,80,0);
+}
+
+/* ====== LOG BOX ====== */
+
+#logBox {
+	background: rgb(40,40,40);
+	padding: 20px;
+	border-radius: 10px;
+	height: 120px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	border: 2px solid rgba(255,255,255,0.07);
+}
+
+#logMain {
+	font-size: 22px;
+	font-weight: 600;
+}
+
+#logEnemy {
+	font-size: 18px;
+	margin-top: 6px;
+	color: rgb(180,180,180);
+}
+
+#logMisc {
+	font-size: 18px;
+	margin-top: 6px;
+	color: rgb(180,180,180);
+}
+
+/* ====== ANIMATIONS ====== */
+
+/* ====== FLASH CLASS ====== */
+body.flash-anim {
+    animation-duration: 0.4s;
+    animation-timing-function: ease;
+}
+
+/* ====== RED ====== */
+@keyframes flash-red {
+    0% { background: rgb(10,10,10); }
+    50% { background: red; }
+    100% { background: rgb(10,10,10); }
+}
+
+.bg-flash-red {
+    animation-name: flash-red;
+    animation-duration: 0.4s;
+}
+
+/* ====== BLUE ====== */
+@keyframes flash-blue {
+    0% { background: rgb(10,10,10); }
+    50% { background: #0095ff; }
+    100% { background: rgb(10,10,10); }
+}
+
+.bg-flash-blue {
+    animation-name: flash-blue;
+    animation-duration: 0.4s;
+}
+
+/* ====== YELLOW ====== */
+@keyframes flash-yellow {
+    0% { background: rgb(10,10,10); }
+    50% { background: #ffe600; }
+    100% { background: rgb(10,10,10); }
+}
+
+.bg-flash-yellow {
+    animation-name: flash-yellow;
+    animation-duration: 0.4s;
+}
+
+@keyframes shake {
+	0%,100% { transform: translateX(0); }
+	20% { transform: translateX(-4px); }
+	40% { transform: translateX(4px); }
+	60% { transform: translateX(-4px); }
+	80% { transform: translateX(4px); }
+}
+
+html.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes heavy-shake {
+    0%,100% { transform: translateX(0) rotate(0deg); }
+    10% { transform: translateX(-12px) rotate(-2deg); }
+    20% { transform: translateX(12px) rotate(2deg); }
+    30% { transform: translateX(-10px) rotate(-1.5deg); }
+    40% { transform: translateX(10px) rotate(1.5deg); }
+    50% { transform: translateX(-8px) rotate(-1deg); }
+    60% { transform: translateX(8px) rotate(1deg); }
+    70% { transform: translateX(-5px) rotate(-0.5deg); }
+    80% { transform: translateX(5px) rotate(0.5deg); }
+}
+
+html.heavy-shake {
+    animation: heavy-shake 0.6s;
+}
+
+/* ====== MISC ====== */
+@media (max-width: 950px) {
+	#game {
+		width: 95%;
+	}
+}
