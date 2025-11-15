@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Combat System V2</title>
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1 id="title">Combat System V2</h1>
+
+        <div id="game">
+            <div id="enemyArea">
+            <p id="enemyNameTxt">Enemy: Gremlin</p>
+            <p id="enemyHealthTxt">Health: 2000 / 2000</p>
+        </div>
+
+        <div id="playerArea">
+            <p id="playerHealthTxt">Your Health: 500 / 500</p>
+            <p id="playerManaTxt">Mana: 0</p>
+            <p id="playerStatusTxt">Status: Normal</p>
+        </div>
+
+        <div id="actionMenu">
+            <button class="action-btn" id="fightBtn">Fight</button>
+            <button class="action-btn" id="magicBtn">Magic</button>
+            <button class="action-btn" id="itemBtn">Item</button>
+            <button class="action-btn" id="summonBtn">Summon</button>
+            <button class="action-btn" id="actBtn">Act</button>
+        </div>
+
+        <div id="submenus">
+            <div class="submenu" id="fightMenu">
+                <button class="sub-btn" id="basicAtkBtn">Basic Attack (0 Mana)</button>
+                <button class="sub-btn">Powered Attack (20 Mana)</button>
+                <button class="sub-btn">Super Powered Attack (40 Mana)</button>
+            </div>
+
+            <div class="submenu" id="magicMenu">
+                <button class="sub-btn">Fireball (15 Mana)</button>
+                <button class="sub-btn">Thunderclap (20 Mana)</button>
+                <button class="sub-btn">Shadow Vortex (50 Mana)</button>
+                <button class="sub-btn">Ice Rain (10 Mana)</button>
+                <button class="sub-btn">Water Bomb (5 Mana)</button>
+                <button class="sub-btn">Piercing of a Thousand Knives (60 Mana)</button>
+            </div>
+
+            <div class="submenu" id="itemMenu">
+                <button class="sub-btn">Healing Potion (5 Obtained)</button>
+                <button class="sub-btn">Strength Elixir (4 Obtained)</button>
+                <button class="sub-btn">Bomb (8 Obtained)</button>
+                <button class="sub-btn">Featherdown Wings (1 Obtained)</button>
+                <button class="sub-btn">Rusty Shield (1 Obtained)</button>
+                <button class="sub-btn">Mysterious Crystal (3 Obtained)</button>
+            </div>
+
+            <div class="submenu" id="summonMenu">
+                <button class="sub-btn">Abyss Drake</button>
+                <button class="sub-btn">Wolf Spirit</button>
+                <button class="sub-btn">Teen Hydra</button>
+                <button class="sub-btn">Prince Cobra</button>
+                <button class="sub-btn">Justice Ghost</button>
+            </div>
+
+            <div class="submenu" id="actMenu">
+                <button class="sub-btn">Rain Dance</button>
+                <button class="sub-btn">Jump Really High</button>
+                <button class="sub-btn">Battle Cry</button>
+                <button class="sub-btn">Mana Charge</button>
+            </div>
+            </div>
+
+            <div id="logBox">
+                <p id="logMain">You ready your stance and weapon for battle...</p>
+                <p id="logEnemy">A Gremlin appears!</p>
+                <p id="logMisc">The air howls around you. You're aching for a fight.</p>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+        </body>
+    </html>

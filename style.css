@@ -1,0 +1,221 @@
+/* ====== GLOBAL ====== */
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Lexend', sans-serif;
+}
+
+body {
+	background: rgb(10, 10, 10);
+	color: white;
+	user-select: none;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#title {
+	margin-top: 30px;
+	font-size: 48px;
+	font-weight: 700;
+    text-align: center;
+}
+
+/* ====== GAME ====== */
+
+#game {
+	margin-top: 30px;
+	width: 1400px;
+	background: rgb(30, 30, 30);
+	border-radius: 16px;
+	padding: 30px;
+	display: flex;
+	flex-direction: column;
+	gap: 25px;
+	box-shadow: 0 0 40px rgba(255,140,0,0.2);
+}
+
+/* ====== OBJECTS ====== */
+
+#enemyArea,
+#playerArea {
+	background: rgb(45,45,45);
+	padding: 20px;
+	border-radius: 12px;
+	text-align: center;
+	border: 2px solid rgba(255,255,255,0.1);
+}
+
+#enemyNameTxt {
+	font-size: 28px;
+	font-weight: 600;
+}
+
+#enemyHealthTxt,
+#playerHealthTxt,
+#playerManaTxt,
+#playerStatusTxt {
+	font-size: 20px;
+	margin-top: 5px;
+}
+
+/* ====== ACTION MENU ====== */
+
+#actionMenu {
+	display: flex;
+	justify-content: center;
+	gap: 20px;
+	width: 100%;
+}
+
+.action-btn {
+    padding: 12px 24px;
+    background: orange;
+    border: 2px solid black;
+    border-radius: 6px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 0;
+}
+
+.action-btn:hover {
+	background: rgb(200,80,0);
+}
+
+.action-btn.active {
+	box-shadow: 0 0 15px orange;
+}
+
+/* ====== SUBMENUS ====== */
+
+#submenus {
+	display: flex;
+	justify-content: center;
+	min-height: 80px;
+	width: 100%;
+}
+
+.submenu {
+	display: none;
+	gap: 20px;
+	width: 100%;
+	justify-content: center;
+}
+
+.submenu.active {
+	display: flex;
+}
+
+.sub-btn {
+    padding: 10px 20px;
+    background: rgb(255, 160, 0);
+    border: 2px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.2s;
+    flex: 1;
+    min-width: 0;
+}
+
+.sub-btn:hover {
+	background: rgb(200,80,0);
+}
+
+/* ====== LOG BOX ====== */
+
+#logBox {
+	background: rgb(40,40,40);
+	padding: 20px;
+	border-radius: 10px;
+	height: 120px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	border: 2px solid rgba(255,255,255,0.07);
+}
+
+#logMain {
+	font-size: 22px;
+	font-weight: 600;
+}
+
+#logEnemy {
+	font-size: 18px;
+	margin-top: 6px;
+	color: rgb(180,180,180);
+}
+
+#logMisc {
+	font-size: 18px;
+	margin-top: 6px;
+	color: rgb(180,180,180);
+}
+
+/* ====== ANIMATIONS ====== */
+
+/* ====== FLASH CLASS ====== */
+body.flash-anim {
+    animation-duration: 0.4s;
+    animation-timing-function: ease;
+}
+
+/* ====== RED ====== */
+@keyframes flash-red {
+    0% { background: rgb(10,10,10); }
+    50% { background: red; }
+    100% { background: rgb(10,10,10); }
+}
+
+.bg-flash-red {
+    animation-name: flash-red;
+    animation-duration: 0.4s;
+}
+
+/* ====== BLUE ====== */
+@keyframes flash-blue {
+    0% { background: rgb(10,10,10); }
+    50% { background: #0095ff; }
+    100% { background: rgb(10,10,10); }
+}
+
+.bg-flash-blue {
+    animation-name: flash-blue;
+    animation-duration: 0.4s;
+}
+
+/* ====== YELLOW ====== */
+@keyframes flash-yellow {
+    0% { background: rgb(10,10,10); }
+    50% { background: #ffe600; }
+    100% { background: rgb(10,10,10); }
+}
+
+.bg-flash-yellow {
+    animation-name: flash-yellow;
+    animation-duration: 0.4s;
+}
+
+@keyframes shake {
+	0%,100% { transform: translateX(0); }
+	20% { transform: translateX(-4px); }
+	40% { transform: translateX(4px); }
+	60% { transform: translateX(-4px); }
+	80% { transform: translateX(4px); }
+}
+
+html.shake {
+    animation: shake 0.5s;
+}
+
+/* ====== MISC ====== */
+
+@media (max-width: 950px) {
+	#game {
+		width: 95%;
+	}
+}
