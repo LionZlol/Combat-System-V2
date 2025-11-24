@@ -7,7 +7,7 @@
 }
 
 body {
-	background: rgb(10, 10, 10);
+	background: rgb(14, 14, 14);
 	color: white;
 	user-select: none;
 	min-height: 100vh;
@@ -29,12 +29,13 @@ body {
 	margin-top: 30px;
 	width: 1400px;
 	background: rgb(30, 30, 30);
+	border: 2px solid rgb(64, 64, 64);
 	border-radius: 16px;
 	padding: 30px;
 	display: flex;
 	flex-direction: column;
 	gap: 25px;
-	box-shadow: 0 0 40px rgba(255,140,0,0.2);
+	box-shadow: 0 0 24px rgba(255, 140, 0, 0.8);
 }
 
 /* ====== OBJECTS ====== */
@@ -48,11 +49,7 @@ body {
 	border: 2px solid rgba(255,255,255,0.1);
 }
 
-#enemyNameTxt {
-	font-size: 28px;
-	font-weight: 600;
-}
-
+#enemyNameTxt,
 #enemyHealthTxt,
 #playerHealthTxt,
 #playerManaTxt,
@@ -84,10 +81,6 @@ body {
 
 .action-btn:hover {
 	background: rgb(200,80,0);
-}
-
-.action-btn.active {
-	box-shadow: 0 0 15px orange;
 }
 
 /* ====== SUBMENUS ====== */
@@ -126,7 +119,7 @@ body {
 	background: rgb(200,80,0);
 }
 
-/* ====== LOG BOX ====== */
+/* ====== LOG MESSAGES ====== */
 
 #logBox {
 	background: rgb(40,40,40);
@@ -166,9 +159,9 @@ body.flash-anim {
 
 /* ====== RED ====== */
 @keyframes flash-red {
-    0% { background: rgb(10,10,10); }
+    0% { background: rgb(14,14,14); }
     50% { background: red; }
-    100% { background: rgb(10,10,10); }
+    100% { background: rgb(14,14,14); }
 }
 
 .bg-flash-red {
@@ -178,9 +171,9 @@ body.flash-anim {
 
 /* ====== BLUE ====== */
 @keyframes flash-blue {
-    0% { background: rgb(10,10,10); }
+    0% { background: rgb(14,14,14); }
     50% { background: #0095ff; }
-    100% { background: rgb(10,10,10); }
+    100% { background: rgb(14,14,14); }
 }
 
 .bg-flash-blue {
@@ -190,9 +183,9 @@ body.flash-anim {
 
 /* ====== YELLOW ====== */
 @keyframes flash-yellow {
-    0% { background: rgb(10,10,10); }
+    0% { background: rgb(14,14,14); }
     50% { background: #ffe600; }
-    100% { background: rgb(10,10,10); }
+    100% { background: rgb(14,14,14); }
 }
 
 .bg-flash-yellow {
@@ -200,6 +193,19 @@ body.flash-anim {
     animation-duration: 0.4s;
 }
 
+/* ====== PURPLE ====== */
+@keyframes flash-purple {
+    0% { background: rgb(14,14,14); }
+    50% { background: #dd00ff; }
+    100% { background: rgb(14,14,14); }
+}
+
+.bg-flash-purple {
+    animation-name: flash-purple;
+    animation-duration: 0.4s;
+}
+
+/* ====== SHAKE ====== */
 @keyframes shake {
 	0%,100% { transform: translateX(0); }
 	20% { transform: translateX(-4px); }
@@ -212,6 +218,7 @@ html.shake {
     animation: shake 0.5s;
 }
 
+/* ====== HEAVY SHAKE ====== */
 @keyframes heavy-shake {
     0%,100% { transform: translateX(0) rotate(0deg); }
     10% { transform: translateX(-12px) rotate(-2deg); }
