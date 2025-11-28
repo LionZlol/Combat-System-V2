@@ -99,10 +99,6 @@ body {
 	justify-content: center;
 }
 
-.submenu.active {
-	display: flex;
-}
-
 .sub-btn {
     padding: 10px 20px;
     background: rgb(255, 160, 0);
@@ -160,7 +156,7 @@ body.flash-anim {
 /* ====== RED ====== */
 @keyframes flash-red {
     0% { background: rgb(14,14,14); }
-    50% { background: red; }
+    50% { background: rgb(255, 0, 0); }
     100% { background: rgb(14,14,14); }
 }
 
@@ -172,7 +168,7 @@ body.flash-anim {
 /* ====== BLUE ====== */
 @keyframes flash-blue {
     0% { background: rgb(14,14,14); }
-    50% { background: #0095ff; }
+    50% { background: rgb(0, 140, 180); }
     100% { background: rgb(14,14,14); }
 }
 
@@ -184,7 +180,7 @@ body.flash-anim {
 /* ====== YELLOW ====== */
 @keyframes flash-yellow {
     0% { background: rgb(14,14,14); }
-    50% { background: #ffe600; }
+    50% { background: rgb(200, 160, 0); }
     100% { background: rgb(14,14,14); }
 }
 
@@ -196,12 +192,24 @@ body.flash-anim {
 /* ====== PURPLE ====== */
 @keyframes flash-purple {
     0% { background: rgb(14,14,14); }
-    50% { background: #dd00ff; }
+    50% { background: rgb(180, 0, 180); }
     100% { background: rgb(14,14,14); }
 }
 
 .bg-flash-purple {
     animation-name: flash-purple;
+    animation-duration: 0.4s;
+}
+
+/* ====== ORANGE ====== */
+@keyframes flash-orange {
+    0% { background: rgb(14,14,14); }
+    50% { background: rgb(200, 100, 0); }
+    100% { background: rgb(14,14,14); }
+}
+
+.bg-flash-orange {
+    animation-name: flash-orange;
     animation-duration: 0.4s;
 }
 
