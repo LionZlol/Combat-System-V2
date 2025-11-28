@@ -24,6 +24,10 @@ const ui = {
     waterBombBtn: document.getElementById('waterBombBtn'),
     thousandKnivesBtn: document.getElementById('thousandKnivesBtn'),
 
+    // ===== ITEM BUTTONS =====
+    healPotionBtn: document.getElementById('healPotionBtn'),
+    strengthElixBtn: document.getElementById('strengthElixBtn'),
+
     // ===== MENUS =====
     fightMenu: document.getElementById('fightMenu'),
     magicMenu: document.getElementById('magicMenu'),
@@ -67,11 +71,14 @@ let currentEnemy = enemies.gremlin;
 /* ===== PLAYER OBJECT ===== */
 const player = {
     /* ===== PLAYER VARIABLES ===== */
-    health: 5,
+    health: 500,
     maxHealth: 500,
     mana: 0,
     manaGainAmount: 1,
     noMana: "You didn't have enough mana.",
+    healPotions: 5,
+    strElixs: 4,
+    strong: false,
 
     attack(damage) {
         let critChance = getRandom(1, 20);
@@ -115,7 +122,7 @@ const pets = {
         active: false,
         turnsRemaining: 0
     }
-}
+};
 
 /* ========================== 
  V ===== GAME LOGIC =====  V
@@ -152,10 +159,16 @@ ui.actBtn.addEventListener("click", function () {
 
 /* ===== BASIC ATTACK LOGIC ===== */
 ui.basicAtkBtn.addEventListener("click", function () {
-    let playerDamage = getRandom(8, 12);
-    player.attack(playerDamage);
+    if(player.strong) {
+        let playerDamage = getRandom(25, 30);
+        player.attack(playerDamage);
+    } else {
+        let playerDamage = getRandom(8, 12);
+        player.attack(playerDamage);
+    }
     cooldown(800, ui.basicAtkBtn);
     BGFlash("red");
+    player.strong = false;
 });
 
 /* ===== POWERED ATTACK LOGIC ===== */
@@ -163,13 +176,19 @@ ui.poweredAtkBtn.addEventListener("click", function () {
     if(checkMana(20)) {
         player.mana -= 20;
         updateDisplays();
-        let playerDamage = getRandom(30, 35);
-        player.attack(playerDamage);
+        if(player.strong) {
+            let playerDamage = getRandom(56, 62);
+            player.attack(playerDamage);
+        } else {
+            let playerDamage = getRandom(35, 40);
+            player.attack(playerDamage);
+        }
         cooldown(4000, ui.poweredAtkBtn);
         BGFlash("red");
     } else {
         ui.logMisc.textContent = player.noMana;
     }
+    player.strong = false;
 });
 
 /* ===== SUPER POWERED ATTACK LOGIC ===== */
@@ -177,13 +196,19 @@ ui.superPoweredAtkBtn.addEventListener("click", function () {
     if(checkMana(40)) {
         player.mana -= 40;
         updateDisplays();
-        let playerDamage = getRandom(50, 62);
-        player.attack(playerDamage);
+        if(player.strong) {
+            let playerDamage = getRandom(75, 89);
+            player.attack(playerDamage);
+        } else {
+            let playerDamage = getRandom(50, 62);
+            player.attack(playerDamage);
+        }
         cooldown(8000, ui.superPoweredAtkBtn);
         BGFlash("red");
     } else {
         ui.logMisc.textContent = player.noMana;
     }
+    player.strong = false;
 });
 
 /* V ===== MAGIC LOGIC ===== V */
@@ -313,10 +338,56 @@ ui.thousandKnivesBtn.addEventListener("click", function () {
     updateDisplays();
 });
 
+
+/* V ===== ITEM LOGIC ===== V */
+
+/* ===== HEALING POTION ===== */
+ui.healPotionBtn.addEventListener("click", function() {
+    if(player.healPotions > 0) {
+        let healAmount = 200;
+        let actualHealed;
+        if(player.health >= player.maxHealth) {
+            ui.logMain.textContent = "Your health is maxed out!";
+            return;
+        }
+        if(player.health + healAmount > player.maxHealth) {
+            actualHealed = player.maxHealth - player.health;
+            player.health = player.maxHealth;
+            /* dang i actually have to add comments otherwise this is just a pile of math lol
+            so basically this is for if the heal potion doesnt fully heal 200 hp and it heals
+            less than 200 since your hp is too high to be healed with 200 */
+        } else {
+            actualHealed = healAmount;
+            player.health += healAmount;
+            // this is for if the healing potion heals 200 hp cuz ur hp is low enough
+        }
+        player.healPotions--;
+        ui.logMain.textContent = `You drank a Healing Potion and healed ${actualHealed} HP!`;
+        BGFlash("purple");
+        updateDisplays();
+    } else {
+        ui.logMain.textContent = "You're out of healing potions! (You're done for)";
+    }
+});
+
+/* ===== STRENGTH ELIXIR ===== */
+ui.strengthElixBtn.addEventListener("click", function(){
+    if(player.strElixs > 0) {
+        player.strong = true;
+        player.strElixs--;
+        ui.logMain.textContent = "You drank a strength elixir! Your next attack will be stronger!"
+        BGFlash("orange");
+    } else {
+        ui.logMain.textContent = "You're out of strength elixirs!";
+    }
+    updateDisplays();
+});
+
+
 /* ===== ENEMY TURN LOGIC ===== */
 function enemyTurn() {
     if(currentEnemy.health <= 0) {
-        ui.logMain.textContent = `The ${currentEnemy.name} is defeated!`;
+        ui.logEnemy.textContent = `The ${currentEnemy.name} is defeated!`;
         return;
     }
 
@@ -342,6 +413,7 @@ function enemyTurn() {
 /* ===== RANDOM NUMBER ===== */
 function getRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+    // bigger number before smaller makes it so that its <=/>= instead of </> (hey thats the html logo :)
 };
 
 /* ===== SUBMENU SWITCHER ===== */
@@ -377,7 +449,8 @@ function BGFlash(color) {
         'bg-flash-red',
         'bg-flash-blue',
         'bg-flash-yellow',
-        'bg-flash-purple'
+        'bg-flash-purple',
+        'bg-flash-orange'
     );
     void document.body.offsetWidth;
     document.body.classList.add(`bg-flash-${color}`);
@@ -401,12 +474,26 @@ function updateDisplays() {
     ui.enemyHealthTxt.textContent = `Enemy Health: ${currentEnemy.health} / ${currentEnemy.maxHealth}`;
     ui.playerHealthTxt.textContent = `Your Health: ${player.health} / ${player.maxHealth}`;
     ui.playerManaTxt.textContent = `Mana: ${player.mana}`;
+
+    ui.healPotionBtn.textContent = `Healing Potion (${player.healPotions} Obtained)`;
+
+    if(player.strong) {
+        ui.fightBtn.style.boxShadow = "0 0 24px rgb(255, 140, 0)";
+        ui.basicAtkBtn.style.boxShadow = "0 0 24px rgb(255, 140, 0)";
+        ui.poweredAtkBtn.style.boxShadow = "0 0 24px rgb(255, 140, 0)";
+        ui.superPoweredAtkBtn.style.boxShadow = "0 0 24px rgb(255, 140, 0)";
+    } else {
+        ui.fightBtn.style.boxShadow = "";
+        ui.basicAtkBtn.style.boxShadow = "";
+        ui.poweredAtkBtn.style.boxShadow = "";
+        ui.superPoweredAtkBtn.style.boxShadow = "";
+    }
 };
 
 /* ===== MANA LOGIC ===== */
 function gainMana() {
     player.addMana(player.manaGainAmount);
-} ;
+};
 
 /* ===== MANA CHECK ===== */
 function checkMana(amount) {
@@ -430,16 +517,46 @@ make it so if the enemy likes ur action, they give u a buff and if they dont, th
 also the pets should be in logmisc
 there should be like 8 enemies
 im so bored and proud of my code at the same time imma show this to my friends
-also make it so that calculateMana(); is a function and it does stuff based on upgrades ig
 AHHHHH im so bored and tired
 featherdown wings should remove all cooldowns for like 8 seconds and make the player feel overpowered and then they realize that they wasted it
+now im just adding comments to make it look like i did something productive
+make it so that rain dance heals you a bit
+also the jump should increase the rate that you gain mana for like 10 seconds
+battle cry basically makes the enemy's turn not do anything for 15 seconds- wait no 12 seconds
+mana charge should give you a chunk of mana instantly (maybe 20)
+i should probably stop procrastinating and do my homework
+but this is way more fun
+wait if the enemy doesnt like your action, they should do a stronger attack YES THIS IS A PERFECT IDEA >:3
+also figure out how to add sound effects
+imagine adding music
+that would be cool
+ok sound effects would be a little too much
+but music would be chill
+also maybe add a crit chance to spells too
+wait i already did that
+ok now im just rambling
+this is what people feel like 
+when
+they
+umm
+uhh
+idk
+...
+bro i said "..." like 5 times now
+im just really bored
+also this is what people feel like
+when
+they
+IM NOT GOING THERE AGAIN NO- NOPE. NO NO, NOPE
+i feel like these comments are making the file be double the size it really needs to be
+but oh well
 
 when you say you're fine but you're not really fine
 also for devs reading my horrible code, just remember you probably used to code like this too at one point
 ok u can leave now
 really
 ...
-whatever i'll just make this be the last comment >:3
+whatever i'll just make this be the last comment
 also-
 wait i broke my promise
 AAAAAAAAAAAAAAAAA
@@ -447,9 +564,8 @@ for those of u saying this code is ai, i put semicolons after my function curly 
 HUH?!??! not so ai generated now
 okay maybe i google SOME syntax but it's not ai generated
 how do i center a div
-chatgpt is my bestie/twin/bro tho
 ok fr now this is the end
 why did past-me do this
 im scared
 please send help
-GODDAMMIT I BROKE MY PROMISE AGAIN- */
+GOD I BROKE MY PROMISE AGAIN- */
